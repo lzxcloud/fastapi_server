@@ -1,12 +1,10 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime,FLOAT
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, FLOAT
 from sqlalchemy.orm import relationship
-
 from .database import Base
 
 
 class User(Base):
     __tablename__ = "users"
-
     id = Column(Integer, primary_key=True, index=True)
     uuid = Column(String, unique=True, max_length=64)
     platform = Column(String, max_length=64)
