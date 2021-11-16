@@ -1,0 +1,8 @@
+key = "value"
+a_boolean = false
+number = 1234
+[databasee]
+host = "localhost"
+port = 3306
+user = "wecat"
+password = "123456"
