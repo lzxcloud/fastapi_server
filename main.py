@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from util.wx import WX
 from typing import Optional
 from pydantic import BaseModel
-
+from config import settings
 
 class Code(BaseModel):
     code: str
@@ -23,7 +23,7 @@ async def root():
     return {"message": "hello world"}
 
 
-@app.post("/wxlogin/", status_code=201)
+@app.post("/wxlogin", status_code=200)
 async def wx_login(code: Code):
     wx = WX(code.code)
     user_openid = wx.get_openid()
