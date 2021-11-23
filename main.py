@@ -1,18 +1,31 @@
 from fastapi import FastAPI
+import schemas
 from util.wx import WX
 from typing import Optional
+from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel
 from config import settings
+from crud import *
+from database import SessionLocal, engine
+from sqlalchemy.orm import Session
+
 
 class Code(BaseModel):
     code: str
-
     class Config:
         schema_extra = {
             "example": {
                 "code": "Foo"
             }
         }
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 app = FastAPI()
@@ -24,7 +37,7 @@ async def root():
 
 
 @app.post("/wxlogin", status_code=200)
-async def wx_login(code: Code):
+async def wx_login(code: Code, db: Session = Depends(get_db)):
     wx = WX(code.code)
     user_openid = wx.get_openid()
     print(user_openid)
@@ -32,20 +45,12 @@ async def wx_login(code: Code):
     if not user_openid:
         return {
             "status": 400,
-            "err": "user exists"
+            "err": "wx uuid error"
         }
     else:
-        pass
-        # if not User.objects.filter(uuid=user_openid):
-        #     print("no user")
-        #     new_user = User.objects.create(uuid=user_openid, platform="web")
-        #     new_user.save()
-        #     return JsonResponse({
-        #         "status": 200,
-        #         "uuid": user_openid,
-        #     }, safe=False)
-        # else:
-        #     return JsonResponse({
-        #         "status": 200,
-        #         "skey": user_openid
-        #     }, safe=False)
+        user = get_user(db, user_openid)
+        if not user:
+            print("no user")
+            return create_user(db, uuid=user_openid)
+        else:
+            return user

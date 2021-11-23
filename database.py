@@ -4,12 +4,13 @@ from sqlalchemy.orm import sessionmaker
 from config import settings
 
 
-SQLALCHEMY_DATABASE_URL = ""
-# SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
+user = "root"
+passwd = "123456"
+host = "127.0.0.1"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
-)
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{user}:{passwd}@{host}/db_wx?charset=utf8mb4"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

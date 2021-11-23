@@ -34,6 +34,7 @@ class User(UserBase):
     id: int
     uuid: str
     is_active: bool
+    platform: str
     info: List[Item] = []
 
     class Config:

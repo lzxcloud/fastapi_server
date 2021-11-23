@@ -1,14 +1,14 @@
 from sqlalchemy.orm import session
-from . import model, schemas
+import model
+import schemas
 
 
 def get_user(db: session, user_id: int):
-    return db.query(model.User).filter(model.User.uuid == user_id).first()
+    return db.query(model.User).filter(model.User.uuid == user_id, model.User.is_active == True).first()
 
 
-def create_user(db: session,user: schemas.user):
-    new_user = model.User(uuid=user.uuid, platform=user.platform)
+def create_user(db: session, uuid: str):
+    new_user = model.User(uuid=uuid)
     db.add(new_user)
     db.commit()
-    db.refresh()
     return new_user
