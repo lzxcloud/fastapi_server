@@ -4,7 +4,6 @@ from util.wx import WX
 from typing import Optional
 from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel
-from config import settings
 from crud import *
 from database import SessionLocal, engine
 from sqlalchemy.orm import Session
@@ -40,7 +39,6 @@ async def root():
 async def wx_login(code: Code, db: Session = Depends(get_db)):
     wx = WX(code.code)
     user_openid = wx.get_openid()
-    print(user_openid)
 
     if not user_openid:
         return {
@@ -50,7 +48,6 @@ async def wx_login(code: Code, db: Session = Depends(get_db)):
     else:
         user = get_user(db, user_openid)
         if not user:
-            print("no user")
             return create_user(db, uuid=user_openid)
         else:
             return user

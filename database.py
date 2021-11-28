@@ -3,12 +3,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from config import settings
 
+user = settings.DB_USER
+passwd = settings.DB_PASS
+host = settings.DB_HOST
+port = settings.DB_PORT
 
-user = "root"
-passwd = "123456"
-host = "127.0.0.1"
-
-SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{user}:{passwd}@{host}/db_wx?charset=utf8mb4"
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{user}:{passwd}@{host}:{port}/db_wx?charset=utf8mb4"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
