@@ -7,10 +7,6 @@ class ItemBase(BaseModel):
     description: Optional[str] = None
 
 
-class ItemCreate(ItemBase):
-    pass
-
-
 class Item(ItemBase):
     id: int
     title: str
@@ -20,6 +16,12 @@ class Item(ItemBase):
 
     class Config:
         orm_mode = True
+
+
+class ItemCreate(ItemBase):
+    title: str
+    cost: float
+    platform: str
 
 
 class UserBase(BaseModel):
@@ -39,3 +41,5 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+

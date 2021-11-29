@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-import schemas
+from schemas import *
 from util.wx import WX
 from typing import Optional
 from fastapi import Depends, FastAPI, HTTPException
@@ -39,7 +39,6 @@ async def root():
 async def wx_login(code: Code, db: Session = Depends(get_db)):
     wx = WX(code.code)
     user_openid = wx.get_openid()
-
     if not user_openid:
         return {
             "status": 400,
@@ -51,3 +50,9 @@ async def wx_login(code: Code, db: Session = Depends(get_db)):
             return create_user(db, uuid=user_openid)
         else:
             return user
+
+
+@app.post("/add", status_code=200)
+async def add(item: ItemCreate,  db: Session = Depends(get_db)):
+    ret = create_info(db, item)
+    return ret

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import session
 import model
-import schemas
+from schemas import ItemCreate
 
 
 def get_user(db: session, user_id: int):
@@ -12,3 +12,14 @@ def create_user(db: session, uuid: str):
     db.add(new_user)
     db.commit()
     return new_user
+
+
+def create_info(db: session, info: ItemCreate):
+    new_info = model.Info(
+        title=info.title,
+        cost=info.cost,
+        platform=info.platform
+    )
+    db.add(new_info)
+    db.commit()
+    return new_info
