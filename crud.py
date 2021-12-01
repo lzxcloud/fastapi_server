@@ -19,7 +19,8 @@ def create_info(db: session, user_id: int,  info: ItemCreate):
         title=info.title,
         cost=info.cost,
         platform=info.platform,
-        user_id=user_id
+        user_id=user_id,
+        end=info.end
     )
     db.add(new_info)
     db.commit()
@@ -33,7 +34,7 @@ def get_user_infos(db: session, user: model.User):
 def get_cost(db: session, user_id: str, end_date: str):
     cost = db.query(func.sum(model.Info.cost)).filter(
         model.Info.user_id == user_id,
-        model.Info.end >= end_date.strftime("%Y-%m-%d")
+        model.Info.end >= end_date
     ).scalar()
 
     return cost
