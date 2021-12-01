@@ -1,5 +1,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
+from datetime import datetime, time, timedelta, date
 
 
 class ItemBase(BaseModel):
@@ -12,7 +13,6 @@ class Item(ItemBase):
     title: str
     cost: float
     platform: str
-    user_id: int
 
     class Config:
         orm_mode = True
@@ -22,6 +22,7 @@ class ItemCreate(ItemBase):
     title: str
     cost: float
     platform: str
+    end: date
 
 
 class UserBase(BaseModel):
@@ -43,3 +44,17 @@ class User(UserBase):
         orm_mode = True
 
 
+class Info(BaseModel):
+    id: int
+    title: str
+    cost: float
+    platform: str
+    this_month: int
+    next_month: int
+    last_month: int
+
+
+class UserInfo(BaseModel):
+    message: str
+    code: int
+    data: List[Info] = []
