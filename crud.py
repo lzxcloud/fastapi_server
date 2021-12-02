@@ -27,14 +27,16 @@ def create_info(db: session, user_id: int,  info: ItemCreate):
     return new_info
 
 
-def get_user_infos(db: session, user: model.User):
-    infos = user.infos.all()
-
+def get_user_infos(db: session, user_id, end_date: str):
+    infos = db.query(model.Info).filter(
+        model.Info.user_id == user_id,
+        model.Info.end >= end_date
+    ).all()
+    return infos
 
 def get_cost(db: session, user_id: str, end_date: str):
     cost = db.query(func.sum(model.Info.cost)).filter(
         model.Info.user_id == user_id,
         model.Info.end >= end_date
     ).scalar()
-
-    return cost
+    return cost if cost else 0

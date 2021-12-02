@@ -4,8 +4,8 @@ from datetime import datetime, time, timedelta, date
 
 
 class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
+    message: str = "success"
+    code: int = 200
 
 
 class Item(ItemBase):
@@ -44,17 +44,13 @@ class User(UserBase):
         orm_mode = True
 
 
-class Info(BaseModel):
-    id: int
-    title: str
-    cost: float
-    platform: str
-    this_month: int
-    next_month: int
-    last_month: int
+class InfoOut(ItemBase):
+    this_month: int = 0
+    next_month: int = 0
+    last_month: int = 0
+    deitl: List[Item] = []
+
 
 
 class UserInfo(BaseModel):
-    message: str
-    code: int
-    data: List[Info] = []
+    data: List[User] = []

@@ -58,14 +58,17 @@ async def add(item: ItemCreate, user_id: int,  db: Session = Depends(get_db)):
     return ret
 
 
-@app.get("/list/{user_id}", status_code=200)
+@app.get("/list/{user_id}", response_model=InfoOut)
 async def get_list(user_id: str, db: session = Depends(get_db)):
     one_month = datetime.timedelta(days=31)
     this_month = datetime.datetime.now()
-
-    print(this_month)
-    print(this_month + one_month)
     this_cost = get_cost(db, user_id, this_month)
     next_cost = get_cost(db, user_id, this_month + one_month)
     last_cost = get_cost(db, user_id, this_month - one_month)
-    print(this_cost, next_cost, last_cost)
+    infos = get_user_infos(db, user_id, this_month)
+    ret = InfoOut()
+    ret.next_month = next_cost
+    ret.last_month = last_cost
+    ret.this_month = this_cost
+    ret.deitl = infos
+    return ret
