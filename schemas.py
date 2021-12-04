@@ -13,6 +13,7 @@ class Item(ItemBase):
     title: str
     cost: float
     platform: str
+    end: datetime
 
     class Config:
         orm_mode = True
@@ -48,8 +49,7 @@ class InfoOut(ItemBase):
     this_month: int = 0
     next_month: int = 0
     last_month: int = 0
-    deitl: List[Item] = []
-
+    detail: List[Item] = []
 
 
 class UserInfo(BaseModel):

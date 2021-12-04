@@ -52,23 +52,26 @@ async def wx_login(code: Code, db: Session = Depends(get_db)):
             return user
 
 
-@app.post("/info/{user_id}", status_code=200)
-async def add(item: ItemCreate, user_id: int,  db: Session = Depends(get_db)):
-    ret = create_info(db, user_id, item)
-    return ret
+@app.post("/info/{uuid}", status_code=200, response_model=ItemBase)
+async def add(item: ItemCreate, uuid: str,  db: Session = Depends(get_db)):
+    user = get_user(db, uuid)
+    ret = create_info(db, user.id, item)
+    return ItemBase()
 
 
-@app.get("/list/{user_id}", response_model=InfoOut)
-async def get_list(user_id: str, db: session = Depends(get_db)):
+@app.get("/list/{uuid}", response_model=InfoOut)
+async def get_list(uuid: str, db: session = Depends(get_db)):
+    user = get_user(db, uuid)
     one_month = datetime.timedelta(days=31)
     this_month = datetime.datetime.now()
-    this_cost = get_cost(db, user_id, this_month)
-    next_cost = get_cost(db, user_id, this_month + one_month)
-    last_cost = get_cost(db, user_id, this_month - one_month)
-    infos = get_user_infos(db, user_id, this_month)
+    this_cost = get_cost(db, user.id, this_month)
+    next_cost = get_cost(db, user.id, this_month + one_month)
+    last_cost = get_cost(db, user.id, this_month - one_month)
+    infos = get_user_infos(db, user.id, this_month)
     ret = InfoOut()
     ret.next_month = next_cost
     ret.last_month = last_cost
     ret.this_month = this_cost
-    ret.deitl = infos
+    ret.detail = infos
     return ret
+

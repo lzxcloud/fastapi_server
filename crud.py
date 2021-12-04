@@ -34,7 +34,8 @@ def get_user_infos(db: session, user_id, end_date: str):
     ).all()
     return infos
 
-def get_cost(db: session, user_id: str, end_date: str):
+
+def get_cost(db: session, user_id: int, end_date: str):
     cost = db.query(func.sum(model.Info.cost)).filter(
         model.Info.user_id == user_id,
         model.Info.end >= end_date
