@@ -1,13 +1,12 @@
-from fastapi import FastAPI
 from schemas import *
 from util.wx import WX
-from typing import Optional
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 from crud import *
-from database import SessionLocal, engine
+from database import SessionLocal
 from sqlalchemy.orm import Session
 import datetime
+
 
 class Code(BaseModel):
     code: str

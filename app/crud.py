@@ -3,6 +3,7 @@ import model
 from schemas import ItemCreate
 from sqlalchemy import func
 
+
 def get_user(db: session, user_id: int):
     return db.query(model.User).filter(model.User.uuid == user_id, model.User.is_active == True).first()
 

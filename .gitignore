@@ -30,4 +30,4 @@ ENV/
 # OSX dir files
 .DS_Store
 # Ignore dynaconf secret files
-.secrets.yaml
+app/.secrets.yaml

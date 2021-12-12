@@ -1,6 +1,7 @@
 import requests
 from config import settings
 
+
 class WX(object):
     def __init__(self, code):
         self.code = code
