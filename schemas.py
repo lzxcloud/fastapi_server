@@ -1,6 +1,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
-from datetime import datetime, time, timedelta, date
+from datetime import date, datetime, time, timedelta
 
 
 class ItemBase(BaseModel):
@@ -13,7 +13,7 @@ class Item(ItemBase):
     title: str
     cost: float
     platform: str
-    end: datetime
+    end: date
 
     class Config:
         orm_mode = True

@@ -30,7 +30,8 @@ def create_info(db: session, user_id: int,  info: ItemCreate):
 def get_user_infos(db: session, user_id, end_date: str):
     infos = db.query(model.Info).filter(
         model.Info.user_id == user_id,
-        model.Info.end >= end_date
+        model.Info.end >= end_date,
+        model.Info.status == True
     ).all()
     return infos
 
@@ -41,3 +42,11 @@ def get_cost(db: session, user_id: int, end_date: str):
         model.Info.end >= end_date
     ).scalar()
     return cost if cost else 0
+
+
+def remove_info(db: session, user_id: int, info_id):
+    info = db.query(model.Info).filter(
+        model.Info.id == info_id,
+        model.Info.user_id == user_id
+    ).update({"status": False})
+    db.commit()

@@ -59,6 +59,13 @@ async def add(item: ItemCreate, uuid: str,  db: Session = Depends(get_db)):
     return ItemBase()
 
 
+@app.delete("/info/{uuid}/{info_id}", status_code=200, response_model=ItemBase)
+async def del_info(uuid: str, info_id:int,  db: Session = Depends(get_db)):
+    user = get_user(db, uuid)
+    remove_info(db, user.id, info_id)
+    return ItemBase()
+
+
 @app.get("/list/{uuid}", response_model=InfoOut)
 async def get_list(uuid: str, db: session = Depends(get_db)):
     user = get_user(db, uuid)

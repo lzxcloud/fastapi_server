@@ -19,7 +19,8 @@ class Info(Base):
     end = Column(Date)
     cost = Column(FLOAT)
     platform = Column(String, unique=True)
+    status = Column(Boolean, default=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="infos")
-    status = Column(Boolean, default=True)
+
 
